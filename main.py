@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from typing import Optional
 
 app = FastAPI()
@@ -55,3 +55,16 @@ def get_user_info(id: int, label: str,lim: Optional[int] = None):
         "limit": lim,
         "message": f"The id is: {id}, The lable is {label}, the limit is {lim}"
     }
+    
+# Concept 5: Response Status Code
+
+#fake Database
+users_db = {
+    "name":"Ann","age":22,"home":"Honolulu","study":"Bachelors","salary":45000.3657
+}
+
+@app.get("/name/{name}")
+def get_info(name: str):
+    if users_db.get("name") != name:
+        raise HTTPException(status_code = 404, detail = "User not found")
+    return users_db
