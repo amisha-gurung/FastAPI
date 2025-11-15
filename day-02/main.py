@@ -1,5 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from database import Human
+from typing import Optional
 
 app = FastAPI()
 
@@ -9,5 +10,12 @@ humans = [
 ]
 
 @app.get("/humans")
-def user_info():
+def get_all_human():
     return humans
+
+@app.get("/humans/{names}")
+def user_info(names: Optional[str] = None):
+    for human in humans:
+        if human.name == names:
+            return human
+    raise HTTPException(status_code=404,  detail=f"no humans named {names}")
