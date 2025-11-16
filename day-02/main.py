@@ -13,8 +13,8 @@ humans = [
 def get_all_human():
     return humans
 
-@app.get("/humans/{names}")
-def user_info(names: Optional[str] = None):
+@app.get("/humans/{names}", response_model=Human)
+def user_info(names: str):
     for human in humans:
         if human.name == names:
             return human
